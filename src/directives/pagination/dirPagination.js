@@ -250,13 +250,26 @@
         // 2. attrs.templateUrl
         // 3. paginationTemplate.getPath()
         var templateString = paginationTemplate.getString();
-        if (templateString !== undefined) {
+        /**if (templateString !== undefined) {
             DDO.template = templateString;
         } else {
             DDO.templateUrl = function(elem, attrs) {
                 return attrs.templateUrl || paginationTemplate.getPath();
             };
-        }
+        }**/
+		
+		var _templateUrl = function(elem, attrs) {
+			return attrs.templateUrl;
+		};
+		if (templateString !== undefined && !_templateUrl) {
+            DDO.template = templateString;
+        } else if (_templateUrl) {
+            DDO.templateUrl = _templateUrl;
+        } else {
+			DDO.templateUrl = function(elem, attrs) {
+                return attrs.templateUrl || paginationTemplate.getPath();
+            };
+		}       	
         return DDO;
 
         function dirPaginationControlsLinkFn(scope, element, attrs) {
